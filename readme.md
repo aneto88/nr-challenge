@@ -9,6 +9,7 @@ Clone ou faça o download este repositório em sua máquina local(em um http ser
 ```sh
 $ cd ~/MeusProjetos/challenge-crawler
 $ composer install
+$ php artisan key:generate
 ```
 
 Após o composer instalar as dependências, precisamos configurar o projeto:
@@ -17,7 +18,7 @@ Após o composer instalar as dependências, precisamos configurar o projeto:
 $ cd ~/MeusProjetos/challenge-crawler
 $ cp .env.example .env //modificar no arquivo as credenciais do banco para rodar as migrações;
 
- //caso deseje salvar os arquivos anexados em disco local.
+ //Link simbolico para storage - public
 $ php artisan storage:link
 
 //criando tabelas no banco.
@@ -49,11 +50,14 @@ $ php artisan scrape:cnpq --reset
 ```
 
 ```
- Para visualizar os dados importados, basta acessar (http://host/biddings) (é retornado um json puro, sem tratamentos, apenas para fins de visualização).
+ Para visualizar os dados importados, basta acessar (http://host/biddings) 
+ (é retornado um json puro, sem tratamentos, apenas para fins de visualização) 
+ Recomendação: utilizar o postman para melhor visualização.
 ```
 
 ## TODO
-
+```
 Implementar Telas para visualização de dados;
 Importar meta_dados;
 Refatorar código para novas fontes de dados;
+```
