@@ -1,59 +1,59 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Challenge Crawler
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Esse projeto é apenas um teste de crawler, usando o [CNPQ](http://www.cnpq.br/web/guest/licitacoes)
 
-## About Laravel
+## Installation using [Composer](https://getcomposer.org/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Clone ou faça o download este repositório em sua máquina local(em um http server), e em seu terminal rode:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```sh
+$ cd ~/MeusProjetos/challenge-crawler
+$ composer install
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+Após o composer instalar as dependências, precisamos configurar o projeto:
 
-## Learning Laravel
+```sh
+$ cd ~/MeusProjetos/challenge-crawler
+$ cp .env.example .env //modificar no arquivo as credenciais do banco para rodar as migrações;
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+ //caso deseje salvar os arquivos anexados em disco local.
+$ php artisan storage:link
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+//criando tabelas no banco.
+$ php artisan migrate
+```
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+## Usage
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+A importação funciona via command line(cli).
 
-## Contributing
+São importados dados básicos da licitação e alguns dados de anexo.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```sh
+//por default esse comando importa apenas a primeira página de licitações (10) e os anexos são importados apenas as urls.
+$ php artisan scrape:cnpq 
 
-## Security Vulnerabilities
+//importando os arquivos para disco local
+$ php artisan scrape:cnpq --importFile
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+//importando com um numero de página definido, basta user o parâmetro --pages=X
+$ php artisan scrape:cnpq --pages=3
 
-## License
+//importando todas as páginas encontradas, basta usar o parâmetro --allPages
+$ php artisan scrape:cnpq --allPages
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+//para resetar o banco e importar dados novos, basta usar o parâmetro --reset
+$ php artisan scrape:cnpq --reset
+```
+
+```
+ Para visualizar os dados importados, basta acessar (http://host/biddings) (é retornado um json puro, sem tratamentos, apenas para fins de visualização).
+```
+
+## TODO
+
+Implementar Telas para visualização de dados;
+Importar meta_dados;
+Refatorar código para novas fontes de dados;
